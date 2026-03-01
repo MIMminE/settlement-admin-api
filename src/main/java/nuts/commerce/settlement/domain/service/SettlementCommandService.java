@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class SettlementCommandService {
     private final SettlementRepository settlementRepository;
     private final SettlementItemRepository settlementItemRepository;
     private final AuditService auditService;
+    private final ZoneId appZoneId;
 
     private final SettlementCalculator calculator = new SettlementCalculator(new BigDecimal("0.05"));
 
@@ -31,7 +33,8 @@ public class SettlementCommandService {
             RefundRepository refundRepository,
             SettlementRepository settlementRepository,
             SettlementItemRepository settlementItemRepository,
-            AuditService auditService
+            AuditService auditService,
+            ZoneId appZoneId
     ) {
         this.sellerRepository = sellerRepository;
         this.orderRepository = orderRepository;
@@ -39,14 +42,15 @@ public class SettlementCommandService {
         this.settlementRepository = settlementRepository;
         this.settlementItemRepository = settlementItemRepository;
         this.auditService = auditService;
+        this.appZoneId = appZoneId;
     }
 
     @Transactional
     public Settlement calculateDaily(Long sellerId, LocalDate date, int version, String actor) {
         Seller seller = sellerRepository.findById(sellerId).orElseThrow();
 
-        Instant from = date.atStartOfDay(ZoneOffset.UTC).toInstant();
-        Instant to = date.plusDays(1).atStartOfDay(ZoneOffset.UTC).toInstant();
+        Instant from = date.atStartOfDay(appZoneId).toInstant();
+        Instant to = date.plusDays(1).atStartOfDay(appZoneId).toInstant();
 
         List<Order> orders = orderRepository.findBySellerIdAndPaidAtBetween(sellerId, from, to);
         List<Refund> refunds = refundRepository.findBySellerIdAndRefundedAtBetween(sellerId, from, to);

@@ -1,4 +1,4 @@
-package nuts.commerce.settlement.security;
+package nuts.commerce.settlement.domain.web;
 
 
 import jakarta.validation.Valid;

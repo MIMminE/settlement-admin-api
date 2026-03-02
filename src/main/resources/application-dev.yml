@@ -10,17 +10,11 @@ spring:
       hibernate:
         jdbc:
           time_zone: Asia/Seoul
-  jackson:
-    time-zone: Asia/Seoul
   flyway:
     enabled: true
-#    baseline-on-migrate: true
 logging:
-  file:
-    name: logs/app.log
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss.SSS,Asia/Seoul} [%thread] %-5level %logger{36} traceId=%X{traceId} - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss.SSS,Asia/Seoul} [%thread] %-5level %logger{36} traceId=%X{traceId} - %msg%n"
+  level:
+    root: DEBUG
 
 app:
   jwt:

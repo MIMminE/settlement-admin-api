@@ -1,0 +1,11 @@
+# Ignore gradle build artifacts
+.gradle
+build
+
+# Ignore IDE files
+.idea
+*.iml
+
+# Ignore local env files
+.env
+

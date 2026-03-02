@@ -5,16 +5,21 @@ import nuts.commerce.settlement.domain.repository.SellerRepository;
 import nuts.commerce.settlement.domain.repository.SettlementRepository;
 import nuts.commerce.settlement.domain.service.AuditService;
 import nuts.commerce.settlement.domain.service.SettlementCommandService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.StepContribution;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.infrastructure.repeat.RepeatStatus;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
 @Component
 public class DailySettlementTasklet implements Tasklet {
+
+    private static final Logger log = LoggerFactory.getLogger(DailySettlementTasklet.class);
 
     private final SellerRepository sellerRepository;
     private final SettlementRepository settlementRepository;
@@ -34,12 +39,20 @@ public class DailySettlementTasklet implements Tasklet {
     }
 
     @Override
-    public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
+    public RepeatStatus execute(@NonNull StepContribution contribution, @NonNull ChunkContext chunkContext) {
         String dateStr = (String) chunkContext.getStepContext().getJobParameters().get("settlementDate");
+        LocalDate date;
         if (dateStr == null || dateStr.isBlank()) {
-            throw new IllegalArgumentException("JobParameter 'settlementDate' is required. e.g. 2026-03-01");
+            // 기본값: 어제 날짜
+            date = LocalDate.now().minusDays(1);
+            log.warn("JobParameter 'settlementDate' not provided. Using default date={}", date);
+        } else {
+            try {
+                date = LocalDate.parse(dateStr);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Invalid 'settlementDate' parameter. Expected format: yyyy-MM-dd", e);
+            }
         }
-        LocalDate date = LocalDate.parse(dateStr);
 
         sellerRepository.findAll().forEach(seller -> {
             try {

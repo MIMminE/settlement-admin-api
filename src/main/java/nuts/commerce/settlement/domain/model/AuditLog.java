@@ -9,7 +9,7 @@ import java.time.Instant;
 @Entity
 @Table(name = "audit_log",
         indexes = {
-                @Index(name = "idx_audit_createdat", columnList = "createdAt")
+                @Index(name = "idx_audit_createdat", columnList = "created_at")
         })
 @Getter
 public class AuditLog {
@@ -19,16 +19,16 @@ public class AuditLog {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 50)
+    @Column(name = "action", nullable = false, length = 50)
     private AuditAction action;
 
-    @Column(nullable = false, length = 80)
+    @Column(name = "actor", nullable = false, length = 80)
     private String actor;
 
-    @Column(length = 200)
+    @Column(name = "message", length = 200)
     private String message;
 
-    @Column(nullable = false)
+    @Column(name = "created_at", nullable = false)
     private Instant createdAt = Instant.now();
 
     protected AuditLog() {

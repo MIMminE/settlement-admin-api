@@ -17,7 +17,7 @@ public class AdminUser {
     @Column(nullable = false, length = 80)
     private String username;
 
-    @Column(nullable = false, length = 200)
+    @Column(name = "password_hash", nullable = false, length = 200)
     private String passwordHash;
 
     protected AdminUser() {

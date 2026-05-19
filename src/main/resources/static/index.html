@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settlement Console</title>
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/">
+        <span class="brand-mark">S</span>
+        <span>Settlement Console</span>
+      </a>
+      <nav class="nav">
+        <a href="#settlements">정산</a>
+        <a href="#batch">배치</a>
+        <a href="/swagger-ui/index.html">API</a>
+      </nav>
+      <div id="sessionState" class="session-state">로그인 필요</div>
+    </header>
+
+    <main class="shell">
+      <section class="login-panel" aria-label="로그인">
+        <form id="loginForm" class="login-form">
+          <div>
+            <p class="eyebrow">Admin</p>
+            <h1>정산 운영 콘솔</h1>
+          </div>
+          <label>
+            계정
+            <input name="username" autocomplete="username" value="admin1" required />
+          </label>
+          <label>
+            비밀번호
+            <input name="password" autocomplete="current-password" type="password" value="password1" required />
+          </label>
+          <button class="primary-button" type="submit">로그인</button>
+        </form>
+      </section>
+
+      <section class="toolbar" aria-label="정산 필터">
+        <form id="filterForm" class="filter-form">
+          <label>
+            판매자 ID
+            <input name="sellerId" inputmode="numeric" placeholder="전체" />
+          </label>
+          <label>
+            시작일
+            <input name="from" type="date" required />
+          </label>
+          <label>
+            종료일
+            <input name="to" type="date" required />
+          </label>
+          <button class="secondary-button" type="submit">조회</button>
+        </form>
+      </section>
+
+      <section class="dashboard">
+        <section id="settlements" class="panel table-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Settlement</p>
+              <h2>정산 목록</h2>
+            </div>
+            <button id="refreshButton" class="icon-button" type="button" title="새로고침">↻</button>
+          </div>
+
+          <div class="metric-row">
+            <div class="metric">
+              <span>대상 정산</span>
+              <strong id="settlementCount">0</strong>
+            </div>
+            <div class="metric">
+              <span>총 지급액</span>
+              <strong id="netTotal">₩0</strong>
+            </div>
+            <div class="metric">
+              <span>대기 건수</span>
+              <strong id="pendingCount">0</strong>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>판매자</th>
+                  <th>정산일</th>
+                  <th>상태</th>
+                  <th>지급액</th>
+                  <th>버전</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="settlementRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <aside class="side-stack">
+          <section id="batch" class="panel">
+            <div class="panel-head compact">
+              <div>
+                <p class="eyebrow">Batch</p>
+                <h2>일별 정산</h2>
+              </div>
+            </div>
+            <form id="batchForm" class="stack-form">
+              <label>
+                정산일
+                <input name="settlementDate" type="date" required />
+              </label>
+              <button class="primary-button" type="submit">배치 실행</button>
+            </form>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head compact">
+              <div>
+                <p class="eyebrow">Items</p>
+                <h2>상세 항목</h2>
+              </div>
+            </div>
+            <div id="itemList" class="item-list">
+              <div class="empty">정산 행을 선택하세요.</div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head compact">
+              <div>
+                <p class="eyebrow">Activity</p>
+                <h2>처리 로그</h2>
+              </div>
+            </div>
+            <pre id="activityLog"></pre>
+          </section>
+        </aside>
+      </section>
+    </main>
+
+    <script type="module" src="/assets/app.js"></script>
+  </body>
+</html>

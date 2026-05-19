@@ -1,0 +1,31 @@
+{
+  "id": "settlement-admin-api",
+  "title": "Settlement Admin API",
+  "subtitle": "정산 백오피스 API와 배치 운영",
+  "category": "실무 도메인형",
+  "status": "Portfolio Ready",
+  "description": "판매자별 주문/환불 데이터를 일별로 집계하고, 정산 재계산, 확정, CSV 다운로드, 감사 로그를 제공하는 백오피스 프로젝트입니다.",
+  "problem": "정산 업무는 집계 결과를 다시 검증하고 확정해야 하며, 운영자가 처리 이력을 추적할 수 있어야 합니다.",
+  "solution": "Spring Batch와 관리자 API를 연결해 일별 정산 생성, 재실행, 확정, CSV export, audit log를 구성했습니다.",
+  "impact": "운영 백오피스에서 자주 필요한 배치/확정/추적 흐름을 웹 콘솔과 API로 설명할 수 있습니다.",
+  "stacks": ["Java", "Spring Boot", "Spring Batch", "Spring Security", "JPA", "PostgreSQL", "Flyway"],
+  "highlights": ["정산 배치", "재계산 버전 관리", "CSV Export", "관리자 JWT 인증", "감사 로그"],
+  "interviewPoints": [
+    "단순 관리자 CRUD가 아닌 집계-검증-확정 흐름 구현",
+    "운영 이벤트와 감사 로그의 필요성 설명",
+    "배치 재실행 시 정산 버전 관리 포인트 설명"
+  ],
+  "coverImage": {
+    "path": "portfolio/web-console-main.png",
+    "alt": "Settlement Admin API 정산 운영 콘솔"
+  },
+  "documents": [
+    { "label": "README", "path": "README.md", "type": "docs" },
+    { "label": "API 목록", "path": "portfolio/portfolio_api_list.md", "type": "docs" },
+    { "label": "보안 분석", "path": "portfolio/portfolio_security_analysis.md", "type": "docs" }
+  ],
+  "localDemo": {
+    "label": "Settlement Console",
+    "url": "http://localhost:18080"
+  }
+}
